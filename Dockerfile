@@ -1,10 +1,12 @@
 # Start with PHP 8.2 with Apache
-FROM php:8.2-apache
+FROM php:8.2-fpm
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    zip unzip git curl libzip-dev libonig-dev sqlite3 \
-    && docker-php-ext-install pdo pdo_sqlite zip
+    zip unzip git curl libzip-dev libonig-dev \
+    libsqlite3-dev sqlite3 \
+    && docker-php-ext-install pdo pdo_sqlite zip \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
